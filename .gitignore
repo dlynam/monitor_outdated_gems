@@ -1,0 +1,17 @@
+/.bundle/
+/.yardoc
+/Gemfile*lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+
+*.sqo
+*.swp
+*.swo
+*.bak
+*.rbc
+*~
+.DS_Store
