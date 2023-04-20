@@ -40,11 +40,11 @@ module MonitorOutdatedGems
       OutputOutdatedGems.new(self).call
     end
 
-    def set_frequency(frequency)
+    def set_frequency_default(frequency)
       self.monitor_frequency = frequency
     end
 
-    def set_versions_to_monitor(versions)
+    def set_versions_default(versions)
       self.versions_to_monitor = versions
     end
 
