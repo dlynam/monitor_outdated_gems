@@ -99,6 +99,7 @@ module MonitorOutdatedGems
           get_latest_versions
         else
           load_cached_versions
+          save_versions_cache
         end
       else
         get_latest_versions
@@ -126,7 +127,12 @@ module MonitorOutdatedGems
 
     def load_cached_versions
       to_monitor.each do |monitored_gem|
-        monitored_gem.latest_version = cached_versions[:latest_versions][monitored_gem.name.to_sym]
+        latest_version = cached_versions[:latest_versions][monitored_gem.name.to_sym]
+        if latest_version
+          monitored_gem.latest_version = latest_version
+        else
+          get_latest_remote_version(monitored_gem)
+        end
       end
     end
 
@@ -144,12 +150,16 @@ module MonitorOutdatedGems
     def load_latest_versions
       to_monitor.each do |monitored_gem|
         begin
-          latest_version = Gem.latest_version_for(monitored_gem.name).to_s
-          cached_versions[:latest_versions][monitored_gem.name.to_sym] = latest_version
-          monitored_gem.latest_version = latest_version
+          get_latest_remote_version(monitored_gem)
         rescue Exception
         end
       end
+    end
+
+    def get_latest_remote_version(monitored_gem)
+      latest_version = Gem.latest_version_for(monitored_gem.name).to_s
+      cached_versions[:latest_versions][monitored_gem.name.to_sym] = latest_version
+      monitored_gem.latest_version = latest_version
     end
 
     def save_versions_cache
