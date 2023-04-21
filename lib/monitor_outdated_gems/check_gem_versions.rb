@@ -1,6 +1,6 @@
 module MonitorOutdatedGems
-  INSTALLED_GEM_VERSIONS = Gem::Specification.inject({}) {|hash, specification|
-    hash[specification.name.to_sym] = specification.version.to_s
+  INSTALLED_GEM_VERSIONS = Gem::Specification.inject({}) {|hash, gem_spec|
+    hash[gem_spec.name.to_sym] = gem_spec.version.to_s
     hash
   }.freeze
   VALID_VERSIONS_TO_MONITOR = ["PATCH", "MINOR", "MAJOR"].freeze
