@@ -267,7 +267,11 @@ module MonitorOutdatedGems
     end
 
     def newer_version_for_level?(num)
-      latest_version.split(".")[num].to_i > current_version.split(".")[num].to_i
+      if latest_version
+        latest_version.split(".")[num].to_i > current_version.split(".")[num].to_i
+      else
+        false
+      end
     end
   end
 end
