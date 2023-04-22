@@ -80,7 +80,7 @@ module MonitorOutdatedGems
     end
 
     def output_not_installed_message(gem_name)
-      puts "#{gem_name} is being monitored by monitor_outdated_gems but is not installed"
+      puts "#{gem_name} is monitored by monitor_outdated_gems but is not installed"
     end
   end
 
