@@ -8,6 +8,10 @@ module MonitorOutdatedGems
   DEFAULT_FREQUENCY = "monthly".freeze
   DEFAULT_CACHED_VERSIONS_PATH = Bundler.user_cache
 
+  class << self
+    attr_accessor :config
+  end
+
   class Config
     attr_accessor :versions_to_monitor, :monitor_frequency
     attr_reader :to_monitor
@@ -22,10 +26,15 @@ module MonitorOutdatedGems
       instance_eval(&block)
       to_monitor.freeze
 
+      set_config
       perform
     end
 
     private
+
+    def set_config
+      MonitorOutdatedGems.config = self
+    end
 
     def perform
       load_latest_versions
@@ -33,11 +42,11 @@ module MonitorOutdatedGems
     end
 
     def load_latest_versions
-      LoadLatestGemVersions.new(self).call
+      LoadLatestGemVersions.new.call
     end
 
     def output_outdated_gems
-      OutputOutdatedGems.new(self).call
+      OutputOutdatedGems.new.call
     end
 
     def set_frequency_default(frequency)

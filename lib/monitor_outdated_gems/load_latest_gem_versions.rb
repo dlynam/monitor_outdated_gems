@@ -1,10 +1,8 @@
 module MonitorOutdatedGems
   class LoadLatestGemVersions
-    attr_reader :to_monitor, :monitor_frequency, :cached_versions
+    attr_reader :cached_versions
 
-    def initialize(config)
-      @to_monitor = config.to_monitor
-      @monitor_frequency = config.monitor_frequency
+    def initialize
       @cached_versions = return_cached_versions
     end
 
@@ -90,6 +88,14 @@ module MonitorOutdatedGems
       else
         {}
       end
+    end
+
+    def to_monitor
+      @to_monitor ||= MonitorOutdatedGems.config.to_monitor
+    end
+
+    def monitor_frequency
+      @monitor_frequency ||= MonitorOutdatedGems.config.monitor_frequency
     end
 
     def cached_versions_file_path

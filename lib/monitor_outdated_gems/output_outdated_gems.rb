@@ -1,11 +1,5 @@
 module MonitorOutdatedGems
   class OutputOutdatedGems
-    attr_reader :to_monitor
-
-    def initialize(config)
-      @to_monitor = config.to_monitor
-    end
-
     def call
       return unless out_of_date_gems.any?
 
@@ -16,6 +10,10 @@ module MonitorOutdatedGems
     end
 
     private
+
+    def to_monitor
+      @to_monitor ||= MonitorOutdatedGems.config.to_monitor
+    end
 
     def out_of_date_gems
       @out_of_date_gems ||= to_monitor.select{|monitored_gem| monitored_gem.out_of_date? }
