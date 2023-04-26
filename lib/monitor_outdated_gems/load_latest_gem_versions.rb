@@ -62,9 +62,11 @@ module MonitorOutdatedGems
 
     def load_latest_versions
       to_monitor.each do |monitored_gem|
-        get_latest_remote_version(monitored_gem)
-      rescue => e
-        puts "Error fetching gem version: #{e}"
+        begin
+          get_latest_remote_version(monitored_gem)
+        rescue => e
+          puts "Error fetching gem version: #{e}"
+        end
       end
     end
 
