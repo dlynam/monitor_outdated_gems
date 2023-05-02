@@ -1,26 +1,18 @@
 module MonitorOutdatedGems
-  INSTALLED_GEM_VERSIONS = Gem::Specification.inject({}) {|hash, gem_spec|
-    hash[gem_spec.name.to_sym] = gem_spec.version.to_s
-    hash
-  }.freeze
-  VALID_VERSIONS_TO_MONITOR = ["PATCH", "MINOR", "MAJOR"].freeze
-  DEFAULT_VERSIONS_TO_MONITOR = "MINOR".freeze
-  DEFAULT_FREQUENCY = "monthly".freeze
-  DEFAULT_CACHED_VERSIONS_PATH = Bundler.user_cache
-
   class << self
     attr_accessor :config
   end
 
   class Config
-    attr_accessor :versions_to_monitor, :monitor_frequency
+    attr_accessor :versions_to_monitor, :monitor_frequency, :cached_versions_filepath
     attr_reader :to_monitor
 
     def initialize(&block)
-      return unless is_rails_development_env? && block
+      return if !is_rails_dev_env? || block.nil?
 
       @versions_to_monitor = DEFAULT_VERSIONS_TO_MONITOR
       @monitor_frequency = DEFAULT_FREQUENCY
+      @cached_versions_filepath = CachedVersionsFilepath.new.call
       @to_monitor = []
 
       instance_eval(&block)
@@ -57,7 +49,11 @@ module MonitorOutdatedGems
       self.versions_to_monitor = versions
     end
 
-    # method for loading gems to monitor in Rails initializer
+    def set_cached_versions_filepath(filepath)
+      self.cached_versions_filepath = filepath
+    end
+
+    # Method for loading gems to monitor in Rails initializer.
     def monitor(gem_name, options={})
       options = HashWithIndifferentAccess.new(options)
       options[:versions] = versions_to_monitor if !version_valid?(options)
@@ -79,17 +75,20 @@ module MonitorOutdatedGems
       VALID_VERSIONS_TO_MONITOR.include?(options[:versions])
     end
 
-    def is_rails_development_env?
+    def output_not_installed_message(gem_name)
+      puts "#{gem_name} is monitored by monitor_outdated_gems but is not installed"
+    end
+
+    def is_rails_dev_env?
+      rails_loaded? && Rails.env == "development"
+    end
+
+    def rails_loaded?
       begin
-        Module.const_get("Rails") &&
-        Rails.env == "development"
+        Module.const_get("Rails") && true
       rescue NameError
         false
       end
-    end
-
-    def output_not_installed_message(gem_name)
-      puts "#{gem_name} is monitored by monitor_outdated_gems but is not installed"
     end
   end
 end

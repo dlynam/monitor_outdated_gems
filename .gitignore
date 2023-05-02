@@ -7,11 +7,4 @@
 /pkg/
 /spec/reports/
 /tmp/
-
-*.sqo
-*.swp
-*.swo
-*.bak
-*.rbc
-*~
-.DS_Store
+/spec/monitor_outdated_gems.yml

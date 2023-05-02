@@ -1,4 +1,6 @@
 require "monitor_outdated_gems/version"
+require "monitor_outdated_gems/constants"
+require "monitor_outdated_gems/cached_versions_filepath"
 require "monitor_outdated_gems/config"
 require "monitor_outdated_gems/monitored_gem"
 require "monitor_outdated_gems/load_latest_gem_versions"

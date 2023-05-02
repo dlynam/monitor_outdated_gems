@@ -79,14 +79,15 @@ module MonitorOutdatedGems
     def save_versions_cache
       cached_versions_file_path
         .yield_self{ |path| File.open(path, "w") }
-        .yield_self{ |file| file.write(cached_versions.to_yaml) }
+        .yield_self{ |file| file.write(cached_versions.to_yaml); file; }
+        .yield_self{ |file| file.close }
     end
 
     def return_cached_versions
       if File.exists?(cached_versions_file_path)
         cached_versions_file_path
           .yield_self{ |path| File.read(path) }
-          .yield_self{ |file| YAML.load(file) }
+          .yield_self{ |file| YAML.load(file); }
       else
         {}
       end
@@ -101,11 +102,7 @@ module MonitorOutdatedGems
     end
 
     def cached_versions_file_path
-      @cached_versions_file_path ||= "#{DEFAULT_CACHED_VERSIONS_PATH}/#{cached_versions_file_name}".freeze
-    end
-
-    def cached_versions_file_name
-      @cached_versions_file_name ||= "monitor_outdated_gems.yml"
+      @cached_versions_file_path ||= MonitorOutdatedGems.config.cached_versions_filepath
     end
   end
 end
