@@ -1,6 +1,7 @@
 require "spec_helper"
 require "./lib/monitor_outdated_gems"
 require "rails"
+require "bundler"
 require "active_support/core_ext/hash/indifferent_access"
 require "active_support/core_ext/integer/time"
 
