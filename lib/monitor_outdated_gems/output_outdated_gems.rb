@@ -11,12 +11,8 @@ module MonitorOutdatedGems
 
     private
 
-    def to_monitor
-      @to_monitor ||= MonitorOutdatedGems.config.to_monitor
-    end
-
     def out_of_date_gems
-      @out_of_date_gems ||= to_monitor.select{|monitored_gem| monitored_gem.out_of_date? }
+      @out_of_date_gems ||= MonitorOutdatedGems.config.to_monitor.select{|monitored_gem| monitored_gem.out_of_date? }
     end
 
     def first_line
