@@ -41,10 +41,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "bundler"
   spec.add_runtime_dependency "yaml"
 
-  spec.add_development_dependency "rubygems-update", ">= 3.3.0"
-  spec.add_development_dependency "rails", ">= 4"
-  spec.add_development_dependency "bundler"
-  spec.add_development_dependency "yaml"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "vcr"
   spec.add_development_dependency "webmock"
