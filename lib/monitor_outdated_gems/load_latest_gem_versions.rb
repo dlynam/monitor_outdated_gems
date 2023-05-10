@@ -94,15 +94,19 @@ module MonitorOutdatedGems
     end
 
     def to_monitor
-      @to_monitor ||= MonitorOutdatedGems.config.to_monitor
+      @to_monitor ||= config.to_monitor
     end
 
     def monitor_frequency
-      @monitor_frequency ||= MonitorOutdatedGems.config.monitor_frequency
+      @monitor_frequency ||= config.monitor_frequency
     end
 
     def cached_versions_file_path
-      @cached_versions_file_path ||= MonitorOutdatedGems.config.cached_versions_filepath
+      @cached_versions_file_path ||= config.cached_versions_filepath
+    end
+
+    def config
+      @config ||= MonitorOutdatedGems.config
     end
   end
 end
